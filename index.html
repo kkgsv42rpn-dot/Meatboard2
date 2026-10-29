@@ -4,7 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baruch's Boards</title>
+.glow-orb {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(201, 164, 92, 0.18),
+    rgba(139, 91, 40, 0.08) 35%,
+    transparent 70%
+  );
+  filter: blur(25px);
+  pointer-events: none;
+  z-index: 1;
+  animation: glowPulse 7s ease-in-out infinite;
+}
 
+@keyframes glowPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
   <style>
     :root {
       --black: #080706;
