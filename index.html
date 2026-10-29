@@ -1,603 +1,1409 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Baruch's Boards</title>
-  <style>
-    :root {
-      --ivory: #f3eee4;
-      --cream: #e8dfcf;
-      --sand: #d8c8ae;
-      --sage: #879078;
-      --olive: #5f6851;
-      --walnut: #6b4932;
-      --espresso: #29251f;
-      --gold: #b89b62;
-      --white: #fffdf8;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Baruch's Boards</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f4efe6;
+    color:#29251f;
+    font-family:"DM Sans",sans-serif;
+    overflow-x:hidden;
+}
+
+
+/* =====================================================
+   NAV
+===================================================== */
+
+nav{
+    position:fixed;
+    z-index:100;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:78px;
+
+    padding:0 5vw;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    font-family:"Playfair Display",serif;
+
+    font-size:21px;
+    font-weight:700;
+
+    letter-spacing:.13em;
+}
+
+.nav-button{
+    text-decoration:none;
+
+    color:#29251f;
+
+    padding:11px 22px;
+
+    border:1px solid rgba(41,37,31,.28);
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    background:rgba(244,239,230,.65);
+
+    backdrop-filter:blur(12px);
+
+    transition:.3s;
+}
+
+.nav-button:hover{
+    background:#29251f;
+    color:white;
+}
+
+
+/* =====================================================
+   CINEMATIC HERO
+===================================================== */
+
+.hero{
+    height:400vh;
+}
+
+.hero-sticky{
+    position:sticky;
+
+    top:0;
+
+    width:100%;
+    height:100vh;
+
+    overflow:hidden;
+
+    perspective:1800px;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(255,255,255,.9),
+            transparent 43%
+        ),
+        #f4efe6;
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.brand{
+    position:absolute;
+
+    z-index:50;
+
+    top:8vh;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-family:"Playfair Display",serif;
+
+    font-size:clamp(20px,2.7vw,38px);
+
+    letter-spacing:.13em;
+
+    white-space:nowrap;
+}
+
+
+/* =====================================================
+   3D SCENE
+===================================================== */
+
+.scene{
+    position:absolute;
+
+    inset:0;
+
+    transform-style:preserve-3d;
+}
+
+
+/* =====================================================
+   BOARD CONTAINER
+===================================================== */
+
+.board-world{
+    position:absolute;
+
+    width:min(1050px,92vw);
+
+    left:50%;
+    top:57%;
+
+    transform-style:preserve-3d;
+
+    will-change:transform;
+
+    z-index:10;
+}
+
+
+/* =====================================================
+   ORIGINAL BOARD
+===================================================== */
+
+.board-base{
+    width:100%;
+
+    display:block;
+
+    border-radius:28px;
+
+    box-shadow:
+        0 90px 130px rgba(48,31,18,.32),
+        0 30px 50px rgba(48,31,18,.20);
+
+    transition:filter .2s;
+}
+
+
+/* =====================================================
+   MEAT PIECES
+
+   These are portions of the EXACT uploaded photograph.
+   They separate from the board as you scroll.
+===================================================== */
+
+.piece{
+    position:absolute;
+
+    z-index:20;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    transform-style:preserve-3d;
+
+    will-change:transform,opacity;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 25px 45px rgba(35,22,13,.25);
+}
+
+
+/*
+   Every piece uses the same photograph.
+
+   Background size is calculated so the crop lines
+   up with the original board.
+*/
+
+.piece::after{
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:url("meat-board.jpg");
+
+    background-repeat:no-repeat;
+
+    background-size:100% 100%;
+}
+
+
+/* =====================================================
+   LEFT MEAT
+===================================================== */
+
+.piece-left{
+    left:1%;
+    top:25%;
+
+    width:31%;
+    height:35%;
+
+    clip-path:polygon(
+        0 5%,
+        100% 0,
+        98% 92%,
+        5% 100%
+    );
+}
+
+.piece-left::after{
+    background-position:0 0;
+}
+
+
+/* =====================================================
+   CENTER TOP MEAT
+===================================================== */
+
+.piece-top{
+    left:31%;
+    top:9%;
+
+    width:38%;
+    height:32%;
+
+    clip-path:polygon(
+        4% 0,
+        97% 2%,
+        100% 94%,
+        0 100%
+    );
+}
+
+.piece-top::after{
+    background-position:0 0;
+}
+
+
+/* =====================================================
+   RIGHT MEAT
+===================================================== */
+
+.piece-right{
+    right:1%;
+    top:13%;
+
+    width:39%;
+    height:46%;
+
+    clip-path:polygon(
+        5% 0,
+        100% 4%,
+        96% 98%,
+        0 92%
+    );
+}
+
+.piece-right::after{
+    background-position:0 0;
+}
+
+
+/* =====================================================
+   CENTER MEAT
+===================================================== */
+
+.piece-center{
+    left:27%;
+    top:36%;
+
+    width:43%;
+    height:39%;
+
+    clip-path:polygon(
+        2% 5%,
+        96% 0,
+        100% 94%,
+        5% 100%
+    );
+}
+
+.piece-center::after{
+    background-position:0 0;
+}
+
+
+/* =====================================================
+   BOTTOM LEFT
+===================================================== */
+
+.piece-bottom-left{
+    left:2%;
+    bottom:2%;
+
+    width:38%;
+    height:34%;
+
+    clip-path:polygon(
+        0 5%,
+        96% 0,
+        100% 94%,
+        5% 100%
+    );
+}
+
+.piece-bottom-left::after{
+    background-position:0 0;
+}
+
+
+/* =====================================================
+   BOTTOM CENTER
+===================================================== */
+
+.piece-bottom{
+    left:31%;
+    bottom:0;
+
+    width:39%;
+    height:31%;
+
+    clip-path:polygon(
+        3% 0,
+        100% 5%,
+        96% 100%,
+        0 94%
+    );
+}
+
+.piece-bottom::after{
+    background-position:0 0;
+}
+
+
+/* =====================================================
+   EXTRA RIGHT PIECE
+===================================================== */
+
+.piece-right-bottom{
+    right:1%;
+    bottom:4%;
+
+    width:35%;
+    height:31%;
+
+    clip-path:polygon(
+        4% 0,
+        100% 5%,
+        95% 100%,
+        0 94%
+    );
+}
+
+.piece-right-bottom::after{
+    background-position:0 0;
+}
+
+
+/* =====================================================
+   BOARD SHADOW
+===================================================== */
+
+.board-shadow{
+    position:absolute;
+
+    z-index:-5;
+
+    left:8%;
+    right:8%;
+
+    bottom:-18%;
+
+    height:25%;
+
+    border-radius:50%;
+
+    background:rgba(42,27,16,.3);
+
+    filter:blur(35px);
+
+    opacity:0;
+}
+
+
+/* =====================================================
+   LIGHT GLOW
+===================================================== */
+
+.glow{
+    position:absolute;
+
+    z-index:-10;
+
+    inset:-20%;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,239,204,.65),
+            transparent 65%
+        );
+
+    filter:blur(40px);
+}
+
+
+/* =====================================================
+   SCROLL MESSAGE
+===================================================== */
+
+.scroll-message{
+    position:absolute;
+
+    bottom:30px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:10px;
+
+    letter-spacing:.25em;
+
+    text-transform:uppercase;
+
+    color:#777066;
+
+    z-index:60;
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress{
+    position:fixed;
+
+    z-index:100;
+
+    right:25px;
+    top:50%;
+
+    width:2px;
+    height:120px;
+
+    background:rgba(40,35,30,.14);
+}
+
+.progress-fill{
+    width:100%;
+    height:0;
+
+    background:#433c34;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.section{
+    min-height:100vh;
+
+    padding:130px 8vw;
+
+    display:flex;
+    align-items:center;
+}
+
+.section-inner{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+}
+
+.section-title{
+    font-family:"Playfair Display",serif;
+
+    font-size:clamp(48px,6vw,82px);
+
+    line-height:1;
+}
+
+.section-text{
+    margin-top:28px;
+
+    max-width:560px;
+
+    color:#665e55;
+
+    font-size:18px;
+
+    line-height:1.7;
+}
+
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.cards{
+    margin-top:70px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:25px;
+}
+
+.card{
+    min-height:280px;
+
+    padding:35px;
+
+    border-radius:25px;
+
+    background:#e7dece;
+
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card-number{
+    color:#74806c;
+
+    font-size:11px;
+
+    letter-spacing:.2em;
+}
+
+.card-title{
+    margin-top:65px;
+
+    font-family:"Playfair Display",serif;
+
+    font-size:31px;
+}
+
+
+/* =====================================================
+   CTA
+===================================================== */
+
+.cta{
+    background:#ddd3c2;
+
+    justify-content:center;
+
+    text-align:center;
+}
+
+.cta-title{
+    font-family:"Playfair Display",serif;
+
+    font-size:clamp(50px,7vw,90px);
+
+    line-height:.95;
+}
+
+.button{
+    display:inline-block;
+
+    margin-top:40px;
+
+    padding:17px 32px;
+
+    border-radius:40px;
+
+    background:#29251f;
+
+    color:white;
+
+    text-decoration:none;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:700px){
+
+    .hero{
+        height:350vh;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    .brand{
+        top:8vh;
+        font-size:19px;
     }
 
-    html {
-      scroll-behavior: smooth;
-      background: var(--ivory);
+    .board-world{
+        width:120vw;
+        top:60%;
     }
 
-    body {
-      font-family: Georgia, "Times New Roman", serif;
-      background:
-        radial-gradient(circle at 50% 10%, #fffdf8 0%, var(--ivory) 42%, #ded4c3 100%);
-      color: var(--espresso);
-      overflow-x: hidden;
+    .cards{
+        grid-template-columns:1fr;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(184,155,98,.08), transparent 30%),
-        radial-gradient(circle at 80% 70%, rgba(95,104,81,.08), transparent 35%);
-      z-index: -1;
+    .section{
+        padding:100px 25px;
     }
 
-    .progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: rgba(41,37,31,.08);
-      z-index: 100;
+    .progress{
+        right:12px;
     }
 
-    .progress span {
-      display: block;
-      width: 0%;
-      height: 100%;
-      background: var(--gold);
-      transform-origin: left;
-    }
+}
 
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 50;
-      padding: 24px 5vw;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      mix-blend-mode: multiply;
-    }
-
-    .logo {
-      font-size: clamp(20px, 2vw, 30px);
-      letter-spacing: .08em;
-      font-weight: 600;
-    }
-
-    .nav-link {
-      text-decoration: none;
-      color: var(--espresso);
-      border: 1px solid rgba(41,37,31,.25);
-      padding: 10px 18px;
-      border-radius: 100px;
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      transition: .3s ease;
-    }
-
-    .nav-link:hover {
-      background: var(--espresso);
-      color: var(--white);
-      transform: translateY(-2px);
-    }
-
-    .hero {
-      height: 220vh;
-      position: relative;
-    }
-
-    .sticky-scene {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1400px;
-    }
-
-    .hero-copy {
-      position: absolute;
-      z-index: 10;
-      text-align: center;
-      width: min(850px, 90vw);
-      transform: translateY(0);
-      transition: opacity .2s linear;
-    }
-
-    .eyebrow {
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: .35em;
-      font-size: 11px;
-      color: var(--olive);
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: clamp(58px, 10vw, 145px);
-      line-height: .82;
-      font-weight: 500;
-      letter-spacing: -.06em;
-    }
-
-    .hero-copy p {
-      margin: 30px auto 0;
-      max-width: 560px;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      line-height: 1.8;
-      color: #625b51;
-    }
-
-    .board-wrap {
-      position: absolute;
-      width: min(620px, 72vw);
-      aspect-ratio: 1.45;
-      transform-style: preserve-3d;
-      transform:
-        translateY(42vh)
-        translateZ(-500px)
-        rotateX(62deg)
-        rotateZ(-8deg)
-        scale(.45);
-      will-change: transform;
-    }
-
-    .board {
-      position: absolute;
-      inset: 0;
-      border-radius: 48% 52% 50% 50% / 42% 45% 55% 58%;
-      background:
-        linear-gradient(145deg, #8c6040, #5c3b27 65%, #432b1d);
-      box-shadow:
-        0 45px 80px rgba(50,35,20,.25),
-        inset 0 0 0 9px rgba(255,220,165,.12),
-        inset 0 0 80px rgba(30,18,8,.3);
-      transform-style: preserve-3d;
-    }
-
-    .board::after {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border-radius: inherit;
-      border: 2px solid rgba(231,202,153,.22);
-      box-shadow: inset 0 0 0 2px rgba(40,20,10,.12);
-    }
-
-    .food {
-      position: absolute;
-      border-radius: 50%;
-      transform-style: preserve-3d;
-      box-shadow: 0 15px 25px rgba(35,20,10,.22);
-    }
-
-    .meat {
-      width: 105px;
-      height: 65px;
-      background:
-        radial-gradient(circle at 30% 35%, #b97658 0 8%, transparent 9%),
-        radial-gradient(circle at 65% 60%, #6d3028 0 10%, transparent 11%),
-        linear-gradient(135deg, #8f4536, #5c2722);
-      border-radius: 45% 55% 50% 45%;
-    }
-
-    .meat.m1 { left: 16%; top: 30%; transform: translateZ(70px) rotate(-12deg); }
-    .meat.m2 { left: 43%; top: 19%; transform: translateZ(110px) rotate(18deg); }
-    .meat.m3 { left: 62%; top: 47%; transform: translateZ(80px) rotate(-25deg); }
-    .meat.m4 { left: 30%; top: 58%; transform: translateZ(130px) rotate(10deg); }
-
-    .cheese {
-      width: 72px;
-      height: 72px;
-      background: #d4ad58;
-      border-radius: 18px;
-    }
-
-    .cheese.c1 { left: 21%; top: 55%; transform: translateZ(150px) rotate(14deg); }
-    .cheese.c2 { left: 68%; top: 27%; transform: translateZ(120px) rotate(-18deg); }
-
-    .grape {
-      width: 28px;
-      height: 28px;
-      background: #4c493d;
-      box-shadow:
-        22px 10px 0 #4c493d,
-        9px 29px 0 #4c493d,
-        31px 36px 0 #4c493d,
-        45px 21px 0 #4c493d;
-    }
-
-    .grapes {
-      left: 68%;
-      top: 57%;
-      transform: translateZ(100px);
-    }
-
-    .leaf {
-      width: 70px;
-      height: 34px;
-      background: var(--sage);
-      border-radius: 100% 0 100% 0;
-      transform: rotate(-25deg) translateZ(90px);
-    }
-
-    .leaf.l1 { left: 12%; top: 48%; }
-    .leaf.l2 { left: 76%; top: 42%; transform: rotate(25deg) translateZ(100px); }
-
-    .scroll-note {
-      position: absolute;
-      bottom: 35px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: Arial, sans-serif;
-      font-size: 10px;
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      color: #746b5e;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      50% { opacity: .35; transform: translateX(-50%) translateY(6px); }
-    }
-
-    .section {
-      min-height: 100vh;
-      padding: 15vh 8vw;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .section:nth-child(even) {
-      background: rgba(255,253,248,.45);
-    }
-
-    .section-inner {
-      width: min(1100px, 100%);
-      margin: auto;
-    }
-
-    .section-number {
-      font-family: Arial, sans-serif;
-      color: var(--gold);
-      font-size: 12px;
-      letter-spacing: .25em;
-      margin-bottom: 20px;
-    }
-
-    .section h2 {
-      font-size: clamp(44px, 7vw, 100px);
-      line-height: .9;
-      max-width: 800px;
-      font-weight: 500;
-      letter-spacing: -.05em;
-    }
-
-    .section p {
-      margin-top: 30px;
-      max-width: 560px;
-      font-family: Arial, sans-serif;
-      line-height: 1.8;
-      color: #625b51;
-    }
-
-    .cards {
-      margin-top: 70px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-      perspective: 1000px;
-    }
-
-    .card {
-      min-height: 330px;
-      padding: 32px;
-      border-radius: 28px;
-      background: rgba(255,253,248,.72);
-      border: 1px solid rgba(75,62,44,.12);
-      box-shadow: 0 25px 70px rgba(55,42,25,.08);
-      transform:
-        translateY(80px)
-        rotateX(12deg);
-      opacity: 0;
-      transition:
-        opacity .8s ease,
-        transform .9s cubic-bezier(.2,.8,.2,1);
-    }
-
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0) rotateX(0);
-    }
-
-    .card:hover {
-      transform: translateY(-12px) rotateX(0) rotateY(4deg);
-      box-shadow: 0 35px 90px rgba(55,42,25,.15);
-    }
-
-    .card-icon {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      background: var(--sage);
-      margin-bottom: 80px;
-      opacity: .9;
-    }
-
-    .card h3 {
-      font-size: 28px;
-      font-weight: 500;
-      margin-bottom: 12px;
-    }
-
-    .card p {
-      margin: 0;
-      font-size: 13px;
-    }
-
-    .build {
-      min-height: 100vh;
-      text-align: center;
-      justify-content: center;
-      background:
-        radial-gradient(circle at center, #f9f3e8, #ded4c2);
-    }
-
-    .build h2 {
-      margin: auto;
-    }
-
-    .cta {
-      display: inline-flex;
-      margin-top: 45px;
-      padding: 18px 34px;
-      border-radius: 100px;
-      background: var(--espresso);
-      color: var(--white);
-      text-decoration: none;
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      transition: .35s ease;
-      box-shadow: 0 15px 35px rgba(41,37,31,.2);
-    }
-
-    .cta:hover {
-      background: var(--olive);
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 20px 45px rgba(41,37,31,.25);
-    }
-
-    footer {
-      padding: 50px 7vw;
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      font-family: Arial, sans-serif;
-      font-size: 11px;
-      letter-spacing: .12em;
-      color: #756d61;
-    }
-
-    @media (max-width: 700px) {
-      nav {
-        padding: 18px 5vw;
-      }
-
-      .board-wrap {
-        width: 90vw;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        min-height: 280px;
-      }
-
-      .card-icon {
-        margin-bottom: 45px;
-      }
-
-      footer {
-        flex-direction: column;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      *,
-      *::before,
-      *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+</style>
 </head>
 
+
 <body>
-  <div class="progress"><span id="progressBar"></span></div>
 
-  <nav>
-    <div class="logo">BARUCH'S BOARDS</div>
-    <a class="nav-link" href="#build">Build Yours</a>
-  </nav>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="sticky-scene">
-        <div class="hero-copy" id="heroCopy">
-          <div class="eyebrow">Kosher · Crafted · Elevated</div>
-          <h1>Boards<br>Worth<br>Gathering For.</h1>
-          <p>
-            Artfully crafted meat boards designed to turn every gathering
-            into something unforgettable.
-          </p>
+<!-- =====================================================
+     NAV
+===================================================== -->
+
+<nav>
+
+    <div class="logo">
+        BARUCH'S BOARDS
+    </div>
+
+    <a
+        href="#contact"
+        class="nav-button"
+    >
+        Build Yours
+    </a>
+
+</nav>
+
+
+<!-- =====================================================
+     PROGRESS
+===================================================== -->
+
+<div class="progress">
+
+    <div
+        class="progress-fill"
+        id="progress"
+    ></div>
+
+</div>
+
+
+<!-- =====================================================
+     CINEMATIC HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-sticky">
+
+
+        <div class="brand">
+            BARUCH'S BOARDS
         </div>
 
-        <div class="board-wrap" id="boardWrap">
-          <div class="board">
-            <div class="food meat m1"></div>
-            <div class="food meat m2"></div>
-            <div class="food meat m3"></div>
-            <div class="food meat m4"></div>
 
-            <div class="food cheese c1"></div>
-            <div class="food cheese c2"></div>
+        <div class="scene">
 
-            <div class="food grape grapes">
-              <div class="grape"></div>
+
+            <div class="board-world" id="board">
+
+
+                <div class="glow"></div>
+
+
+                <!-- ==========================================
+                     REAL BOARD IMAGE
+                ========================================== -->
+
+                <img
+                    src="meat-board.jpg"
+                    class="board-base"
+                    id="baseBoard"
+                    alt="Baruch's Board"
+                >
+
+
+                <!-- ==========================================
+                     FLOATING COMPONENTS
+                ========================================== -->
+
+
+                <div
+                    class="piece piece-left"
+                    id="piece1"
+                ></div>
+
+
+                <div
+                    class="piece piece-top"
+                    id="piece2"
+                ></div>
+
+
+                <div
+                    class="piece piece-right"
+                    id="piece3"
+                ></div>
+
+
+                <div
+                    class="piece piece-center"
+                    id="piece4"
+                ></div>
+
+
+                <div
+                    class="piece piece-bottom-left"
+                    id="piece5"
+                ></div>
+
+
+                <div
+                    class="piece piece-bottom"
+                    id="piece6"
+                ></div>
+
+
+                <div
+                    class="piece piece-right-bottom"
+                    id="piece7"
+                ></div>
+
+
+                <div
+                    class="board-shadow"
+                    id="shadow"
+                ></div>
+
+
             </div>
 
-            <div class="food leaf l1"></div>
-            <div class="food leaf l2"></div>
-          </div>
         </div>
 
-        <div class="scroll-note">Scroll to explore</div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="section-inner">
-        <div class="section-number">01 / THE EXPERIENCE</div>
-        <h2>Not just a board.<br>A centerpiece.</h2>
-        <p>
-          Every board is designed to feel intentional—from the arrangement
-          of premium meats to the smallest finishing detail.
+        <div class="scroll-message">
+            Scroll
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SECOND SECTION
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-inner">
+
+        <h2 class="section-title">
+            Made for the<br>
+            middle of the table.
+        </h2>
+
+        <p class="section-text">
+            Beautiful presentation designed to turn
+            an ordinary table into the centerpiece
+            of the occasion.
         </p>
+
 
         <div class="cards">
-          <div class="card">
-            <div class="card-icon"></div>
-            <h3>Crafted</h3>
-            <p>Every element is arranged with precision and personality.</p>
-          </div>
 
-          <div class="card">
-            <div class="card-icon"></div>
-            <h3>Kosher</h3>
-            <p>Thoughtfully prepared for elevated kosher entertaining.</p>
-          </div>
 
-          <div class="card">
-            <div class="card-icon"></div>
-            <h3>Memorable</h3>
-            <p>Designed to become the part of the gathering everyone remembers.</p>
-          </div>
+            <div class="card">
+
+                <div class="card-number">
+                    01
+                </div>
+
+                <div class="card-title">
+                    Crafted
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-number">
+                    02
+                </div>
+
+                <div class="card-title">
+                    Generous
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-number">
+                    03
+                </div>
+
+                <div class="card-title">
+                    Memorable
+                </div>
+
+            </div>
+
+
         </div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="section-inner">
-        <div class="section-number">02 / YOUR BOARD</div>
-        <h2>Your table.<br>Your style.</h2>
-        <p>
-          From intimate evenings to celebrations, Baruch's Boards can be
-          tailored around the people, flavors, and moment.
-        </p>
-      </div>
-    </section>
+    </div>
 
-    <section class="section build" id="build">
-      <div class="section-inner">
-        <div class="section-number">03 / THE FINAL TOUCH</div>
-        <h2>Let's build<br>your board.</h2>
-        <a class="cta" href="mailto:hello@baruchsboards.com">
-          Start Your Board
+</section>
+
+
+<!-- =====================================================
+     CTA
+===================================================== -->
+
+<section
+    class="section cta"
+    id="contact"
+>
+
+    <div class="section-inner">
+
+        <div class="cta-title">
+            Your table.<br>
+            Your board.
+        </div>
+
+        <a
+            class="button"
+            href="mailto:hello@baruchsboards.com"
+        >
+            Build Your Board
         </a>
-      </div>
-    </section>
-  </main>
 
-  <footer>
-    <span>BARUCH'S BOARDS</span>
-    <span>CRAFTED FOR THE TABLE</span>
-  </footer>
+    </div>
 
-  <script>
-    const board = document.getElementById("boardWrap");
-    const heroCopy = document.getElementById("heroCopy");
-    const progressBar = document.getElementById("progressBar");
-    const cards = document.querySelectorAll(".card");
+</section>
 
-    function updateScene() {
-      const scrollY = window.scrollY;
-      const heroHeight = window.innerHeight * 2.2;
-      const heroProgress = Math.min(scrollY / (heroHeight - window.innerHeight), 1);
 
-      const translateY = 42 - heroProgress * 42;
-      const translateZ = -500 + heroProgress * 850;
-      const rotateX = 62 - heroProgress * 62;
-      const rotateZ = -8 + heroProgress * 16;
-      const scale = .45 + heroProgress * .65;
+<script>
 
-      board.style.transform =
-        `translateY(${translateY}vh)
-         translateZ(${translateZ}px)
-         rotateX(${rotateX}deg)
-         rotateZ(${rotateZ}deg)
-         scale(${scale})`;
+/* =========================================================
+   CINEMATIC SCROLL ENGINE
+========================================================= */
 
-      heroCopy.style.opacity = Math.max(0, 1 - heroProgress * 2.2);
-      heroCopy.style.transform =
-        `translateY(${-heroProgress * 90}px) scale(${1 - heroProgress * .12})`;
 
-      const pageHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+const hero =
+    document.querySelector(".hero");
 
-      progressBar.style.width =
-        `${(scrollY / pageHeight) * 100}%`;
+const board =
+    document.querySelector("#board");
 
-      cards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
+const baseBoard =
+    document.querySelector("#baseBoard");
 
-        if (rect.top < window.innerHeight * .85) {
-          setTimeout(() => {
-            card.classList.add("visible");
-          }, index * 100);
-        }
-      });
+const shadow =
+    document.querySelector("#shadow");
+
+const progress =
+    document.querySelector("#progress");
+
+
+const pieces = [
+
+    document.querySelector("#piece1"),
+
+    document.querySelector("#piece2"),
+
+    document.querySelector("#piece3"),
+
+    document.querySelector("#piece4"),
+
+    document.querySelector("#piece5"),
+
+    document.querySelector("#piece6"),
+
+    document.querySelector("#piece7")
+
+];
+
+
+let target = 0;
+
+let smooth = 0;
+
+
+/* =========================================================
+   SCROLL POSITION
+========================================================= */
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        const rect =
+            hero.getBoundingClientRect();
+
+        const total =
+            hero.offsetHeight -
+            window.innerHeight;
+
+
+        target =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    -rect.top / total
+                )
+            );
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   PIECE SETTINGS
+========================================================= */
+
+const pieceSettings = [
+
+    /*
+        x,
+        y,
+        z,
+        rotation,
+        delay
+    */
+
+    [-120,-260,420,-18,.00],
+
+    [30,-360,520,15,.05],
+
+    [160,-300,430,-14,.10],
+
+    [-20,-420,600,20,.16],
+
+    [-150,-220,390,-17,.22],
+
+    [30,-290,470,12,.28],
+
+    [160,-230,360,-10,.34]
+
+];
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+function animate(){
+
+    /*
+        Smooth scrolling.
+    */
+
+    smooth +=
+        (target-smooth) *
+        .055;
+
+
+    const p =
+        smooth;
+
+
+    /* =====================================================
+       MAIN BOARD
+
+       It begins floating and tilted,
+       then slowly settles.
+    ===================================================== */
+
+
+    const boardZ =
+        -850 +
+        p * 650;
+
+
+    const boardY =
+        -3 +
+        p * 8;
+
+
+    const boardRotate =
+        32 -
+        p * 32;
+
+
+    const boardScale =
+        .60 +
+        p * .40;
+
+
+    board.style.transform =
+
+        "translate(-50%,-50%) " +
+
+        "translate3d(" +
+
+        "0," +
+
+        boardY +
+
+        "vh," +
+
+        boardZ +
+
+        "px)" +
+
+        "rotateX(" +
+
+        boardRotate +
+
+        "deg)" +
+
+        "rotateZ(-4deg)" +
+
+        "scale(" +
+
+        boardScale +
+
+        ")";
+
+
+    /* =====================================================
+       THE MEAT LIFT
+
+       0.00 → 0.20
+       Board is together.
+
+       0.20 → 0.55
+       Pieces rise into the air.
+
+       0.55 → 1.00
+       Pieces slowly return to the board.
+    ===================================================== */
+
+
+    let liftProgress;
+
+
+    if(p < .18){
+
+        liftProgress = 0;
+
     }
 
-    window.addEventListener("scroll", updateScene, { passive: true });
-    window.addEventListener("resize", updateScene);
+    else if(p < .58){
 
-    updateScene();
-  </script>
+        liftProgress =
+            (p-.18)/.40;
+
+    }
+
+    else{
+
+        liftProgress =
+            1-((p-.58)/.42);
+
+    }
+
+
+    liftProgress =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                liftProgress
+            )
+        );
+
+
+    /*
+        Smooth easing.
+    */
+
+    const eased =
+        liftProgress < .5
+
+        ?
+
+        2 *
+        liftProgress *
+        liftProgress
+
+        :
+
+        1 -
+        Math.pow(
+            -2 *
+            liftProgress +
+            2,
+            2
+        ) / 2;
+
+
+    /* =====================================================
+       INDIVIDUAL MEAT PIECES
+    ===================================================== */
+
+
+    pieces.forEach(
+        (piece,index) => {
+
+            const settings =
+                pieceSettings[index];
+
+
+            const startX =
+                settings[0];
+
+            const startY =
+                settings[1];
+
+            const startZ =
+                settings[2];
+
+            const startRotation =
+                settings[3];
+
+            const delay =
+                settings[4];
+
+
+            /*
+                Delay each piece slightly.
+
+                This creates a cascading
+                "pieces floating apart" effect.
+            */
+
+            const local =
+                Math.max(
+                    0,
+                    Math.min(
+                        1,
+                        (eased-delay) /
+                        (1-delay)
+                    )
+                );
+
+
+            /*
+                Lift away from the board.
+            */
+
+            const x =
+                startX * local;
+
+            const y =
+                startY * local;
+
+            const z =
+                startZ * local;
+
+
+            /*
+                Rotate while floating.
+            */
+
+            const rotation =
+                startRotation *
+                local;
+
+
+            /*
+                Slight additional tilt.
+            */
+
+            const rotateY =
+                Math.sin(
+                    local * Math.PI
+                ) * 12;
+
+
+            piece.style.opacity =
+                local > .01
+                ? "1"
+                : "0";
+
+
+            piece.style.transform =
+
+                "translate3d(" +
+
+                x +
+                "px," +
+
+                y +
+                "px," +
+
+                z +
+                "px)" +
+
+                "rotateX(" +
+
+                rotation +
+
+                "deg)" +
+
+                "rotateY(" +
+
+                rotateY +
+
+                "deg)" +
+
+                "rotateZ(" +
+
+                rotation*.4 +
+
+                "deg)";
+
+
+            /*
+                Shadow under the floating pieces.
+            */
+
+        }
+    );
+
+
+    /* =====================================================
+       BOARD SHADOW
+    ===================================================== */
+
+    const shadowOpacity =
+        .15 +
+        p*.5;
+
+
+    shadow.style.opacity =
+        shadowOpacity;
+
+
+    /* =====================================================
+       ORIGINAL IMAGE
+
+       Slightly fades while the individual pieces
+       are floating, then becomes completely solid
+       again when everything lands.
+    ===================================================== */
+
+    let baseOpacity;
+
+
+    if(p < .18){
+
+        baseOpacity = 1;
+
+    }
+
+    else if(p < .58){
+
+        baseOpacity =
+            1 -
+            ((p-.18)/.40)*.55;
+
+    }
+
+    else{
+
+        baseOpacity =
+            .45 +
+            ((p-.58)/.42)*.55;
+
+    }
+
+
+    baseBoard.style.opacity =
+        baseOpacity;
+
+
+    /* =====================================================
+       PROGRESS
+    ===================================================== */
+
+    progress.style.height =
+        (p*100) +
+        "%";
+
+
+    requestAnimationFrame(
+        animate
+    );
+
+}
+
+
+animate();
+
+
+/* =========================================================
+   MOUSE PARALLAX
+========================================================= */
+
+window.addEventListener(
+    "mousemove",
+    event => {
+
+        if(
+            window.innerWidth < 700
+        ){
+
+            return;
+
+        }
+
+
+        const mouseX =
+            event.clientX /
+            window.innerWidth -
+            .5;
+
+
+        const mouseY =
+            event.clientY /
+            window.innerHeight -
+            .5;
+
+
+        board.style.marginLeft =
+            mouseX * 18 +
+            "px";
+
+
+        board.style.marginTop =
+            mouseY * 12 +
+            "px";
+
+    }
+);
+
+</script>
+
 </body>
 </html>
