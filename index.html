@@ -1,43 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Baruch's Boards</title>
-.glow-orb {
-  position: absolute;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(201, 164, 92, 0.18),
-    rgba(139, 91, 40, 0.08) 35%,
-    transparent 70%
-  );
-  filter: blur(25px);
-  pointer-events: none;
-  z-index: 1;
-  animation: glowPulse 7s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.65;
-  }
-  50% {
-    transform: scale(1.12);
-    opacity: 1;
-  }
-}
   <style>
     :root {
-      --black: #080706;
-      --dark: #11100e;
-      --cream: #f4ead8;
-      --gold: #c9a45c;
-      --muted: #a89d8c;
+      --ivory: #f3eee4;
+      --cream: #e8dfcf;
+      --sand: #d8c8ae;
+      --sage: #879078;
+      --olive: #5f6851;
+      --walnut: #6b4932;
+      --espresso: #29251f;
+      --gold: #b89b62;
+      --white: #fffdf8;
     }
 
     * {
@@ -48,12 +25,14 @@
 
     html {
       scroll-behavior: smooth;
+      background: var(--ivory);
     }
 
     body {
-      background: var(--black);
-      color: var(--cream);
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 50% 10%, #fffdf8 0%, var(--ivory) 42%, #ded4c3 100%);
+      color: var(--espresso);
       overflow-x: hidden;
     }
 
@@ -62,31 +41,28 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 10;
-      opacity: .06;
-      background-image: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(255,255,255,.12) 3px
-      );
-      mix-blend-mode: overlay;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(184,155,98,.08), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(95,104,81,.08), transparent 35%);
+      z-index: -1;
     }
 
-    .cursor-glow {
+    .progress {
       position: fixed;
-      width: 350px;
-      height: 350px;
-      border-radius: 50%;
-      pointer-events: none;
-      background: radial-gradient(
-        circle,
-        rgba(201,164,92,.13),
-        transparent 68%
-      );
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      transition: left .15s ease, top .15s ease;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(41,37,31,.08);
+      z-index: 100;
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: var(--gold);
+      transform-origin: left;
     }
 
     nav {
@@ -94,444 +70,378 @@
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 20;
+      z-index: 50;
+      padding: 24px 5vw;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 25px 6%;
-      transition: background .5s ease, padding .5s ease;
+      justify-content: space-between;
+      mix-blend-mode: multiply;
     }
 
-    nav.scrolled {
-      background: rgba(8,7,6,.82);
-      backdrop-filter: blur(18px);
-      padding: 17px 6%;
-      border-bottom: 1px solid rgba(201,164,92,.15);
-    }
-
-    .nav-logo {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 21px;
-      letter-spacing: 1px;
-      color: var(--cream);
+    .logo {
+      font-size: clamp(20px, 2vw, 30px);
+      letter-spacing: .08em;
+      font-weight: 600;
     }
 
     .nav-link {
-      color: var(--cream);
       text-decoration: none;
+      color: var(--espresso);
+      border: 1px solid rgba(41,37,31,.25);
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-family: Arial, sans-serif;
       font-size: 12px;
-      letter-spacing: 2px;
+      letter-spacing: .12em;
       text-transform: uppercase;
-      opacity: .8;
+      transition: .3s ease;
+    }
+
+    .nav-link:hover {
+      background: var(--espresso);
+      color: var(--white);
+      transform: translateY(-2px);
     }
 
     .hero {
-      min-height: 100vh;
+      height: 220vh;
       position: relative;
+    }
+
+    .sticky-scene {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 45%, rgba(105,67,32,.22), transparent 30%),
-        radial-gradient(circle at 20% 80%, rgba(201,164,92,.08), transparent 28%),
-        var(--black);
+      perspective: 1400px;
     }
 
-    .hero-orb {
+    .hero-copy {
       position: absolute;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background:
-        radial-gradient(
-          circle at 35% 30%,
-          rgba(255,236,190,.18),
-          rgba(139,91,40,.12) 30%,
-          transparent 68%
-        );
-      filter: blur(5px);
-      animation: orbFloat 9s ease-in-out infinite;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 3;
+      z-index: 10;
       text-align: center;
-      padding: 100px 20px 60px;
+      width: min(850px, 90vw);
+      transform: translateY(0);
+      transition: opacity .2s linear;
     }
 
     .eyebrow {
-      color: var(--gold);
-      font-size: 11px;
-      letter-spacing: 5px;
+      font-family: Arial, sans-serif;
       text-transform: uppercase;
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: riseIn 1s .4s forwards;
+      letter-spacing: .35em;
+      font-size: 11px;
+      color: var(--olive);
+      margin-bottom: 20px;
     }
 
-    .hero h1 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(60px, 12vw, 150px);
-      font-weight: 400;
-      line-height: .9;
-      letter-spacing: -5px;
-      margin-bottom: 30px;
-      opacity: 0;
-      animation: titleReveal 1.5s .7s cubic-bezier(.2,.8,.2,1) forwards;
+    h1 {
+      font-size: clamp(58px, 10vw, 145px);
+      line-height: .82;
+      font-weight: 500;
+      letter-spacing: -.06em;
     }
 
-    .hero h1 span {
-      display: block;
-      color: var(--gold);
-      font-style: italic;
-    }
-
-    .hero-subtitle {
-      max-width: 520px;
-      margin: auto;
-      color: var(--muted);
+    .hero-copy p {
+      margin: 30px auto 0;
+      max-width: 560px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
       line-height: 1.8;
-      font-size: 15px;
-      opacity: 0;
-      animation: riseIn 1s 1.2s forwards;
+      color: #625b51;
     }
 
-    .hero-button {
-      display: inline-block;
-      margin-top: 38px;
-      padding: 16px 30px;
-      border: 1px solid rgba(201,164,92,.55);
-      color: var(--cream);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 11px;
-      transition: all .4s ease;
-      opacity: 0;
-      animation: riseIn 1s 1.5s forwards;
-    }
-
-    .hero-button:hover {
-      background: var(--gold);
-      color: var(--black);
-      transform: translateY(-3px);
-      box-shadow: 0 15px 45px rgba(201,164,92,.2);
-    }
-
-    .board-stage {
+    .board-wrap {
       position: absolute;
-      width: min(700px, 85vw);
-      height: 420px;
-      bottom: -80px;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      animation: boardReveal 1.8s 1s forwards;
-      z-index: 2;
-      pointer-events: none;
+      width: min(620px, 72vw);
+      aspect-ratio: 1.45;
+      transform-style: preserve-3d;
+      transform:
+        translateY(42vh)
+        translateZ(-500px)
+        rotateX(62deg)
+        rotateZ(-8deg)
+        scale(.45);
+      will-change: transform;
     }
 
     .board {
       position: absolute;
-      inset: 50px 10%;
-      border-radius: 45% 45% 38% 38%;
+      inset: 0;
+      border-radius: 48% 52% 50% 50% / 42% 45% 55% 58%;
       background:
-        linear-gradient(
-          135deg,
-          #5e371f,
-          #8a5430 45%,
-          #492717
-        );
+        linear-gradient(145deg, #8c6040, #5c3b27 65%, #432b1d);
       box-shadow:
-        0 40px 80px rgba(0,0,0,.7),
-        inset 0 2px 15px rgba(255,220,160,.12);
-      transform: rotate(-4deg);
-      animation: boardFloat 6s ease-in-out infinite;
+        0 45px 80px rgba(50,35,20,.25),
+        inset 0 0 0 9px rgba(255,220,165,.12),
+        inset 0 0 80px rgba(30,18,8,.3);
+      transform-style: preserve-3d;
+    }
+
+    .board::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: inherit;
+      border: 2px solid rgba(231,202,153,.22);
+      box-shadow: inset 0 0 0 2px rgba(40,20,10,.12);
     }
 
     .food {
       position: absolute;
       border-radius: 50%;
-      box-shadow: 0 15px 25px rgba(0,0,0,.4);
+      transform-style: preserve-3d;
+      box-shadow: 0 15px 25px rgba(35,20,10,.22);
     }
 
-    .food.one {
-      width: 145px;
-      height: 95px;
-      background: linear-gradient(145deg,#9a4a35,#5d211a);
-      left: 23%;
-      top: 28%;
-      transform: rotate(-12deg);
-    }
-
-    .food.two {
-      width: 120px;
-      height: 80px;
-      background: linear-gradient(145deg,#b96c49,#64291d);
-      left: 48%;
-      top: 45%;
-      transform: rotate(18deg);
-    }
-
-    .food.three {
+    .meat {
       width: 105px;
+      height: 65px;
+      background:
+        radial-gradient(circle at 30% 35%, #b97658 0 8%, transparent 9%),
+        radial-gradient(circle at 65% 60%, #6d3028 0 10%, transparent 11%),
+        linear-gradient(135deg, #8f4536, #5c2722);
+      border-radius: 45% 55% 50% 45%;
+    }
+
+    .meat.m1 { left: 16%; top: 30%; transform: translateZ(70px) rotate(-12deg); }
+    .meat.m2 { left: 43%; top: 19%; transform: translateZ(110px) rotate(18deg); }
+    .meat.m3 { left: 62%; top: 47%; transform: translateZ(80px) rotate(-25deg); }
+    .meat.m4 { left: 30%; top: 58%; transform: translateZ(130px) rotate(10deg); }
+
+    .cheese {
+      width: 72px;
       height: 72px;
-      background: linear-gradient(145deg,#733629,#3d1713);
-      left: 64%;
-      top: 22%;
-      transform: rotate(-8deg);
+      background: #d4ad58;
+      border-radius: 18px;
     }
 
-    .food.four {
-      width: 85px;
-      height: 85px;
-      background: radial-gradient(circle at 35% 30%,#f1d7a1,#9b6b36);
-      left: 34%;
-      top: 56%;
+    .cheese.c1 { left: 21%; top: 55%; transform: translateZ(150px) rotate(14deg); }
+    .cheese.c2 { left: 68%; top: 27%; transform: translateZ(120px) rotate(-18deg); }
+
+    .grape {
+      width: 28px;
+      height: 28px;
+      background: #4c493d;
+      box-shadow:
+        22px 10px 0 #4c493d,
+        9px 29px 0 #4c493d,
+        31px 36px 0 #4c493d,
+        45px 21px 0 #4c493d;
     }
 
-    .food.five {
-      width: 68px;
-      height: 68px;
-      background: radial-gradient(circle at 35% 30%,#d7b15f,#75501e);
-      left: 70%;
-      top: 54%;
+    .grapes {
+      left: 68%;
+      top: 57%;
+      transform: translateZ(100px);
     }
 
-    section {
-      position: relative;
-      padding: 150px 7%;
-      background: var(--dark);
+    .leaf {
+      width: 70px;
+      height: 34px;
+      background: var(--sage);
+      border-radius: 100% 0 100% 0;
+      transform: rotate(-25deg) translateZ(90px);
     }
 
-    .section-label {
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 4px;
+    .leaf.l1 { left: 12%; top: 48%; }
+    .leaf.l2 { left: 76%; top: 42%; transform: rotate(25deg) translateZ(100px); }
+
+    .scroll-note {
+      position: absolute;
+      bottom: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Arial, sans-serif;
       font-size: 10px;
-      margin-bottom: 18px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: #746b5e;
+      animation: pulse 2s infinite;
     }
 
-    .section-title {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(42px, 7vw, 90px);
-      font-weight: 400;
-      line-height: 1;
-      max-width: 850px;
+    @keyframes pulse {
+      50% { opacity: .35; transform: translateX(-50%) translateY(6px); }
     }
 
-    .section-copy {
-      max-width: 600px;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-top: 28px;
+    .section {
+      min-height: 100vh;
+      padding: 15vh 8vw;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section:nth-child(even) {
+      background: rgba(255,253,248,.45);
+    }
+
+    .section-inner {
+      width: min(1100px, 100%);
+      margin: auto;
+    }
+
+    .section-number {
+      font-family: Arial, sans-serif;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: .25em;
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      font-size: clamp(44px, 7vw, 100px);
+      line-height: .9;
+      max-width: 800px;
+      font-weight: 500;
+      letter-spacing: -.05em;
+    }
+
+    .section p {
+      margin-top: 30px;
+      max-width: 560px;
+      font-family: Arial, sans-serif;
+      line-height: 1.8;
+      color: #625b51;
     }
 
     .cards {
+      margin-top: 70px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 22px;
-      margin-top: 75px;
+      perspective: 1000px;
     }
 
     .card {
-      min-height: 380px;
-      padding: 35px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(201,164,92,.14);
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.04),
-          rgba(255,255,255,.01)
-        );
-      transition: transform .6s cubic-bezier(.2,.8,.2,1),
-                  border-color .5s ease;
+      min-height: 330px;
+      padding: 32px;
+      border-radius: 28px;
+      background: rgba(255,253,248,.72);
+      border: 1px solid rgba(75,62,44,.12);
+      box-shadow: 0 25px 70px rgba(55,42,25,.08);
+      transform:
+        translateY(80px)
+        rotateX(12deg);
+      opacity: 0;
+      transition:
+        opacity .8s ease,
+        transform .9s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0) rotateX(0);
     }
 
     .card:hover {
-      transform: translateY(-14px);
-      border-color: rgba(201,164,92,.5);
+      transform: translateY(-12px) rotateX(0) rotateY(4deg);
+      box-shadow: 0 35px 90px rgba(55,42,25,.15);
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
+    .card-icon {
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
-      background: radial-gradient(circle,#8c442d,transparent 68%);
-      top: 40px;
-      right: -50px;
-      opacity: .7;
-      transition: transform .7s ease;
-    }
-
-    .card:hover::before {
-      transform: scale(1.25);
-    }
-
-    .card:nth-child(2)::before {
-      background: radial-gradient(circle,#a66b35,transparent 68%);
-    }
-
-    .card:nth-child(3)::before {
-      background: radial-gradient(circle,#5f3528,transparent 68%);
-    }
-
-    .card-number {
-      color: var(--gold);
-      font-size: 11px;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      background: var(--sage);
+      margin-bottom: 80px;
+      opacity: .9;
     }
 
     .card h3 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 32px;
-      font-weight: 400;
-      position: relative;
-      z-index: 2;
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 12px;
     }
 
     .card p {
-      color: var(--muted);
-      line-height: 1.6;
-      margin-top: 12px;
-      position: relative;
-      z-index: 2;
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .build {
+      min-height: 100vh;
+      text-align: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at center, #f9f3e8, #ded4c2);
+    }
+
+    .build h2 {
+      margin: auto;
     }
 
     .cta {
-      min-height: 70vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background:
-        radial-gradient(circle at center, rgba(139,91,40,.18), transparent 45%),
-        var(--black);
+      display: inline-flex;
+      margin-top: 45px;
+      padding: 18px 34px;
+      border-radius: 100px;
+      background: var(--espresso);
+      color: var(--white);
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transition: .35s ease;
+      box-shadow: 0 15px 35px rgba(41,37,31,.2);
     }
 
-    .cta h2 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(50px, 9vw, 120px);
-      font-weight: 400;
-      line-height: .95;
-    }
-
-    .cta h2 em {
-      color: var(--gold);
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(60px);
-      transition: opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .cta:hover {
+      background: var(--olive);
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 20px 45px rgba(41,37,31,.25);
     }
 
     footer {
-      padding: 35px 7%;
-      border-top: 1px solid rgba(255,255,255,.08);
-      color: #71695d;
+      padding: 50px 7vw;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-family: Arial, sans-serif;
       font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-align: center;
-      background: var(--black);
+      letter-spacing: .12em;
+      color: #756d61;
     }
 
-    @keyframes titleReveal {
-      from {
-        opacity: 0;
-        transform: translateY(70px) scale(.94);
-        filter: blur(18px);
+    @media (max-width: 700px) {
+      nav {
+        padding: 18px 5vw;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-      }
-    }
 
-    @keyframes riseIn {
-      from {
-        opacity: 0;
-        transform: translateY(25px);
+      .board-wrap {
+        width: 90vw;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
 
-    @keyframes boardReveal {
-      from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(130px) scale(.85);
-        filter: blur(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0) scale(1);
-        filter: blur(0);
-      }
-    }
-
-    @keyframes boardFloat {
-      0%,100% {
-        transform: rotate(-4deg) translateY(0);
-      }
-      50% {
-        transform: rotate(-2deg) translateY(-18px);
-      }
-    }
-
-    @keyframes orbFloat {
-      0%,100% {
-        transform: scale(1) translate(0,0);
-      }
-      50% {
-        transform: scale(1.08) translate(20px,-25px);
-      }
-    }
-
-    @media (max-width: 800px) {
       .cards {
         grid-template-columns: 1fr;
       }
 
       .card {
-        min-height: 300px;
+        min-height: 280px;
       }
 
-      .hero h1 {
-        letter-spacing: -2px;
+      .card-icon {
+        margin-bottom: 45px;
       }
 
-      .board-stage {
-        bottom: -50px;
+      footer {
+        flex-direction: column;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
       *,
       *::before,
       *::after {
         animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
         transition-duration: .01ms !important;
       }
     }
@@ -539,158 +449,155 @@
 </head>
 
 <body>
+  <div class="progress"><span id="progressBar"></span></div>
 
-  <div class="cursor-glow" id="cursorGlow"></div>
-
-  <nav id="nav">
-    <div class="nav-logo">Baruch's Boards</div>
-    <a class="nav-link" href="#boards">Explore</a>
+  <nav>
+    <div class="logo">BARUCH'S BOARDS</div>
+    <a class="nav-link" href="#build">Build Yours</a>
   </nav>
 
   <main>
+    <section class="hero" id="home">
+      <div class="sticky-scene">
+        <div class="hero-copy" id="heroCopy">
+          <div class="eyebrow">Kosher · Crafted · Elevated</div>
+          <h1>Boards<br>Worth<br>Gathering For.</h1>
+          <p>
+            Artfully crafted meat boards designed to turn every gathering
+            into something unforgettable.
+          </p>
+        </div>
 
-    <section class="hero">
+        <div class="board-wrap" id="boardWrap">
+          <div class="board">
+            <div class="food meat m1"></div>
+            <div class="food meat m2"></div>
+            <div class="food meat m3"></div>
+            <div class="food meat m4"></div>
 
-      <div class="hero-orb"></div>
+            <div class="food cheese c1"></div>
+            <div class="food cheese c2"></div>
 
-      <div class="hero-content">
-        <div class="eyebrow">Premium Kosher Meat Boards</div>
+            <div class="food grape grapes">
+              <div class="grape"></div>
+            </div>
 
-        <h1>
-          Baruch's
-          <span>Boards</span>
-        </h1>
+            <div class="food leaf l1"></div>
+            <div class="food leaf l2"></div>
+          </div>
+        </div>
 
-        <p class="hero-subtitle">
-          Handcrafted meat boards designed to turn any gathering
-          into an experience.
+        <div class="scroll-note">Scroll to explore</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-number">01 / THE EXPERIENCE</div>
+        <h2>Not just a board.<br>A centerpiece.</h2>
+        <p>
+          Every board is designed to feel intentional—from the arrangement
+          of premium meats to the smallest finishing detail.
         </p>
 
-        <a class="hero-button" href="#boards">
-          Discover the Boards
-        </a>
-      </div>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon"></div>
+            <h3>Crafted</h3>
+            <p>Every element is arranged with precision and personality.</p>
+          </div>
 
-      <div class="board-stage">
-        <div class="board">
-          <div class="food one"></div>
-          <div class="food two"></div>
-          <div class="food three"></div>
-          <div class="food four"></div>
-          <div class="food five"></div>
+          <div class="card">
+            <div class="card-icon"></div>
+            <h3>Kosher</h3>
+            <p>Thoughtfully prepared for elevated kosher entertaining.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon"></div>
+            <h3>Memorable</h3>
+            <p>Designed to become the part of the gathering everyone remembers.</p>
+          </div>
         </div>
       </div>
-<div class="glow-orb"></div>
     </section>
 
-    <section id="boards">
-
-      <div class="reveal">
-        <div class="section-label">The Experience</div>
-
-        <h2 class="section-title">
-          More than a meat board.
-          <br>
-          It's the centerpiece.
-        </h2>
-
-        <p class="section-copy">
-          Every Baruch's Board is built around premium presentation,
-          carefully selected kosher meats, and the kind of detail
-          that makes people stop and look before they even take a bite.
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-number">02 / YOUR BOARD</div>
+        <h2>Your table.<br>Your style.</h2>
+        <p>
+          From intimate evenings to celebrations, Baruch's Boards can be
+          tailored around the people, flavors, and moment.
         </p>
       </div>
-
-      <div class="cards">
-
-        <article class="card reveal">
-          <div class="card-number">01 / THE CLASSIC</div>
-          <h3>Timeless.</h3>
-          <p>
-            A refined selection designed for effortless entertaining.
-          </p>
-        </article>
-
-        <article class="card reveal">
-          <div class="card-number">02 / THE SIGNATURE</div>
-          <h3>Unforgettable.</h3>
-          <p>
-            A more elevated board made to become the conversation.
-          </p>
-        </article>
-
-        <article class="card reveal">
-          <div class="card-number">03 / THE EXPERIENCE</div>
-          <h3>Custom.</h3>
-          <p>
-            Built around your event, your guests, and your vision.
-          </p>
-        </article>
-
-      </div>
-
     </section>
 
-    <section class="cta">
-
-      <div class="reveal">
-        <div class="section-label">Your Table Awaits</div>
-
-        <h2>
-          Let's make it
-          <br>
-          <em>beautiful.</em>
-        </h2>
-
-        <a class="hero-button" href="#boards">
-          Build Your Board
+    <section class="section build" id="build">
+      <div class="section-inner">
+        <div class="section-number">03 / THE FINAL TOUCH</div>
+        <h2>Let's build<br>your board.</h2>
+        <a class="cta" href="mailto:hello@baruchsboards.com">
+          Start Your Board
         </a>
       </div>
-
     </section>
-
   </main>
 
   <footer>
-    Baruch's Boards · Premium Kosher Meat Boards
+    <span>BARUCH'S BOARDS</span>
+    <span>CRAFTED FOR THE TABLE</span>
   </footer>
 
   <script>
-    const nav = document.getElementById("nav");
-    const cursorGlow = document.getElementById("cursorGlow");
+    const board = document.getElementById("boardWrap");
+    const heroCopy = document.getElementById("heroCopy");
+    const progressBar = document.getElementById("progressBar");
+    const cards = document.querySelectorAll(".card");
 
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 50) {
-        nav.classList.add("scrolled");
-      } else {
-        nav.classList.remove("scrolled");
-      }
-    });
+    function updateScene() {
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight * 2.2;
+      const heroProgress = Math.min(scrollY / (heroHeight - window.innerHeight), 1);
 
-    if (window.matchMedia("(pointer: fine)").matches) {
-      document.addEventListener("mousemove", (event) => {
-        cursorGlow.style.left = event.clientX + "px";
-        cursorGlow.style.top = event.clientY + "px";
+      const translateY = 42 - heroProgress * 42;
+      const translateZ = -500 + heroProgress * 850;
+      const rotateX = 62 - heroProgress * 62;
+      const rotateZ = -8 + heroProgress * 16;
+      const scale = .45 + heroProgress * .65;
+
+      board.style.transform =
+        `translateY(${translateY}vh)
+         translateZ(${translateZ}px)
+         rotateX(${rotateX}deg)
+         rotateZ(${rotateZ}deg)
+         scale(${scale})`;
+
+      heroCopy.style.opacity = Math.max(0, 1 - heroProgress * 2.2);
+      heroCopy.style.transform =
+        `translateY(${-heroProgress * 90}px) scale(${1 - heroProgress * .12})`;
+
+      const pageHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      progressBar.style.width =
+        `${(scrollY / pageHeight) * 100}%`;
+
+      cards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight * .85) {
+          setTimeout(() => {
+            card.classList.add("visible");
+          }, index * 100);
+        }
       });
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      {
-        threshold: 0.15
-      }
-    );
+    window.addEventListener("scroll", updateScene, { passive: true });
+    window.addEventListener("resize", updateScene);
 
-    document.querySelectorAll(".reveal").forEach((element) => {
-      observer.observe(element);
-    });
+    updateScene();
   </script>
-
 </body>
 </html>
